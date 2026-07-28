@@ -282,26 +282,6 @@ The final EXE is created at:
 dist\ToolBar2.exe
 ```
 
-<p>
-        <i>
-          ToolBar2 is free and open source. If it saves you time or helps keep your
-          desktop organized, consider supporting its continued development.
-        </i>
-      </p>
-
-      <div style="text-align: center;">
-        <a href="https://www.paypal.com/donate/?hosted_button_id=FRRKTE7W8KYWU">
-          <img
-            src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
-            alt="Donate with PayPal"
-          >
-        </a>
-
-        <h5 style="margin-top: 8px;">
-          <i>Donations are optional and greatly appreciated.</i>
-        </h5>
-      </div>
-
 The build script removes only `build` and `dist`. It does not delete `toolbar_config.json`, `toolbar_config.backup.json`, or `user_profiles`.
 
 ## Tests
@@ -324,3 +304,22 @@ Manual multi-monitor validation is documented in [MULTI_MONITOR_TEST_CHECKLIST.m
 - Keep `toolbar_config.json` and `user_profiles` together when moving the app to another folder.
 - Profile exports include profile-owned icons and logos, but not external files or programs referenced by launcher targets.
 - Folder launcher drops operate on real filesystem items. Review the destination folder and conflict prompts before choosing replace or move actions.
+
+<hr>
+
+<p align="center">
+  <i>
+    ToolBar2 is free and open source. If it helps keep your desktop organized,
+    consider supporting its continued development.
+  </i>
+</p>
+
+<p align="center">
+  <a href="https://www.paypal.com/donate/?hosted_button_id=FRRKTE7W8KYWU">
+    <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal">
+  </a>
+</p>
+
+<h5 align="center">
+  <i>Donations are optional and greatly appreciated.</i>
+</h5>
