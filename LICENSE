@@ -1,0 +1,43 @@
+CUSTOM NON-COMMERCIAL SOFTWARE LICENSE (GPLv3 WITH AMENDMENT)
+Copyright (c) 2026 Middle Creek Insurance
+
+===============================================================================
+SECTION A: NON-COMMERCIAL AMENDMENT (PREVAILING TERMS)
+===============================================================================
+
+Notwithstanding any provisions of the GNU General Public License version 3.0 
+detailed below, the following restrictive terms apply to this Software and all 
+derivative works built upon it:
+
+1. NON-COMMERCIAL RESTRICTION: You may not use, copy, modify, merge, publish, 
+   distribute, sublicense, or sell this Software or its derivative works for 
+   commercial purposes, commercial advantage, or private financial gain. 
+
+2. PERMITTED USES: Personal use, educational use, and non-commercial academic 
+   research are fully permitted.
+
+3. CONFLICT OF TERMS: In the event of any conflict, contradiction, or ambiguity 
+   between the terms of this Section A and the standard GNU General Public 
+   License version 3.0 (Section B), the restrictive terms of this Section A 
+   shall prevail and take absolute legal precedence.
+
+===============================================================================
+SECTION B: CORE TERMS, SHARE-ALIKE, AND PATENT PROTECTION (GNU GPL v3.0)
+===============================================================================
+
+Subject to the restrictions in Section A, the following standard terms apply:
+
+1. SOURCE CODE DISCLOSURE (SHARE-ALIKE): If you modify this Software and 
+   distribute it to others, you must make your modified source code publicly 
+   available under these exact same license terms. You cannot make your 
+   modifications closed-source.
+
+2. PATENT PROTECTION: This license includes an explicit patent grant. Every 
+   contributor to this Software grants you a royalty-free, perpetual, 
+   worldwide patent license to use their contributions. Conversely, if you 
+   sue anyone over patent infringement regarding this software, your right 
+   to use this software terminates automatically.
+
+3. NO WARRANTY: THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY 
+   KIND, EXPRESS OR IMPLIED. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
+   BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY.
