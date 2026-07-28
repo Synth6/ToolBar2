@@ -47,7 +47,8 @@ from menu_config_helpers import (
     valid_menu_destination_at_path,
 )
 from menu_properties_dialog import MenuPropertiesDialog
-from monitor_utils import screen_for_monitor_id
+from monitor_utils import monitor_id as screen_monitor_id
+from monitor_utils import monitor_tray_display_name, screen_for_monitor_id
 
 if TYPE_CHECKING:
     from toolbar_manager import ToolbarManager
@@ -2493,7 +2494,15 @@ class ToolbarWindow(QtWidgets.QFrame):
         self.manager.populate_profiles_menu(profiles_menu)
         menu.addAction("Toolbar Settings...", self.open_settings)
         menu.addAction("Help", self.open_help)
-        menu.addAction("Hide Toolbar", self.manager.hide_toolbars)
+        move_menu = menu.addMenu("Move This Toolbar To...")
+        self.populate_move_toolbar_menu(move_menu)
+        move_menu.setEnabled(self.manager.can_move_toolbar_for_monitor(self.monitor_id) and not move_menu.isEmpty())
+        disable_action = menu.addAction("Disable This Toolbar")
+        disable_action.setEnabled(self.manager.can_disable_toolbar_for_monitor(self.monitor_id))
+        disable_action.triggered.connect(self.disable_this_toolbar)
+        delete_action = menu.addAction("Delete This Toolbar...")
+        delete_action.setEnabled(self.manager.can_delete_toolbar_for_monitor(self.monitor_id))
+        delete_action.triggered.connect(self.confirm_delete_this_toolbar)
         menu.addSeparator()
         menu.addAction("Exit", self.exit_toolbar)
         self.show_menu(self.configured_screen())
@@ -2502,6 +2511,94 @@ class ToolbarWindow(QtWidgets.QFrame):
             menu.exec(position)
         finally:
             self.dialog_open = False
+
+    def populate_move_toolbar_menu(self, move_menu: QtWidgets.QMenu) -> None:
+        move_menu.clear()
+        for index, screen in enumerate(QtGui.QGuiApplication.screens()):
+            destination_monitor_id = screen_monitor_id(screen)
+            if not destination_monitor_id or destination_monitor_id == self.monitor_id:
+                continue
+            action = move_menu.addAction(monitor_tray_display_name(screen, index))
+            action.setData(destination_monitor_id)
+            action.triggered.connect(
+                lambda _checked=False, target_id=destination_monitor_id: self.move_this_toolbar_to(target_id)
+            )
+
+    def move_this_toolbar_to(self, destination_monitor_id: str) -> None:
+        destination_monitor_id = str(destination_monitor_id or "").strip()
+        if not destination_monitor_id:
+            return
+        try:
+            if self.manager.is_monitor_selected(destination_monitor_id):
+                if not self.confirm_swap_toolbars(destination_monitor_id):
+                    return
+                self.manager.swap_monitor_toolbars(self.monitor_id, destination_monitor_id)
+            else:
+                self.manager.move_toolbar_to_monitor(self.monitor_id, destination_monitor_id)
+        except OSError as exc:
+            QtWidgets.QMessageBox.warning(
+                self,
+                "Move Toolbar",
+                str(exc) or "The toolbar could not be moved.",
+            )
+
+    def confirm_swap_toolbars(self, destination_monitor_id: str) -> bool:
+        destination_name = self.monitor_display_name_for_id(destination_monitor_id)
+        box = QtWidgets.QMessageBox(self)
+        box.setWindowTitle("Swap Toolbars?")
+        box.setText(f"{destination_name} already has a toolbar.")
+        box.setInformativeText("Switch the two toolbar configurations between monitors?")
+        swap_button = box.addButton("Swap Toolbars", QtWidgets.QMessageBox.ButtonRole.AcceptRole)
+        box.addButton("Cancel", QtWidgets.QMessageBox.ButtonRole.RejectRole)
+        box.setDefaultButton(swap_button)
+        self.dialog_open = True
+        try:
+            box.exec()
+            return box.clickedButton() is swap_button
+        finally:
+            self.dialog_open = False
+
+    def disable_this_toolbar(self) -> None:
+        try:
+            self.manager.disable_toolbar_for_monitor(self.monitor_id)
+        except OSError as exc:
+            QtWidgets.QMessageBox.warning(
+                self,
+                "Disable Toolbar",
+                str(exc) or "The toolbar could not be disabled.",
+            )
+
+    def confirm_delete_this_toolbar(self) -> None:
+        monitor_name = self.monitor_display_name_for_id(self.monitor_id)
+        box = QtWidgets.QMessageBox(self)
+        box.setWindowTitle("Delete This Toolbar?")
+        box.setText(f"Permanently delete the toolbar for {monitor_name}?")
+        box.setInformativeText(
+            "This removes its menus, appearance, logo, search settings, and monitor-specific assets. "
+            "Other toolbars and saved user profiles will not be affected."
+        )
+        delete_button = box.addButton("Delete Toolbar", QtWidgets.QMessageBox.ButtonRole.DestructiveRole)
+        box.addButton("Cancel", QtWidgets.QMessageBox.ButtonRole.RejectRole)
+        self.dialog_open = True
+        try:
+            box.exec()
+            if box.clickedButton() is not delete_button:
+                return
+            self.manager.delete_toolbar_for_monitor(self.monitor_id)
+        except OSError as exc:
+            QtWidgets.QMessageBox.warning(
+                self,
+                "Delete Toolbar",
+                str(exc) or "The toolbar could not be deleted.",
+            )
+        finally:
+            self.dialog_open = False
+
+    def monitor_display_name_for_id(self, target_monitor_id: str) -> str:
+        for index, screen in enumerate(QtGui.QGuiApplication.screens()):
+            if screen_monitor_id(screen) == target_monitor_id:
+                return monitor_tray_display_name(screen, index)
+        return target_monitor_id
 
     def blank_add_top_level_menu(self) -> None:
         self.dialog_open = True

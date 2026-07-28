@@ -1537,6 +1537,108 @@ def expand_asset_field(profile_id: str, item: dict[str, Any], field: str) -> Non
     item[field] = str(Path(USER_PROFILES_DIR) / profile_id / normalized).replace("\\", "/")
 
 
+def collect_toolbar_asset_paths(value: Any, references: set[Path]) -> None:
+    if isinstance(value, dict):
+        for key, item_value in value.items():
+            if key in {"icon", "icon_path", "image"}:
+                path_text = str(item_value or "")
+                if path_text and path_text != DEFAULT_LOGO_IMAGE:
+                    try:
+                        references.add(resolve_external_path(path_text).resolve())
+                    except OSError:
+                        pass
+            else:
+                collect_toolbar_asset_paths(item_value, references)
+        return
+    if isinstance(value, list):
+        for item in value:
+            collect_toolbar_asset_paths(item, references)
+
+
+def stage_delete_monitor_profile_assets(
+    config_without_profile: dict[str, Any],
+    monitor_profile_id: str,
+) -> list[tuple[Path, Path]]:
+    profile_id = safe_profile_id(str(config_without_profile.get("active_user_profile_id") or "")) or "default"
+    monitor_profile_id = safe_profile_id(str(monitor_profile_id or ""))
+    if not monitor_profile_id:
+        return []
+
+    asset_root = user_profile_icons_dir(profile_id, monitor_profile_id)
+    if not asset_root.exists():
+        return []
+    resolved_root = asset_root.resolve()
+    try:
+        resolved_root.relative_to(user_profile_dir(profile_id).resolve())
+    except (OSError, ValueError) as exc:
+        raise ValueError("Monitor profile asset directory is invalid.") from exc
+
+    referenced_paths: set[Path] = set()
+    collect_toolbar_asset_paths(config_without_profile, referenced_paths)
+    staged: list[tuple[Path, Path]] = []
+    staging_root = asset_root.parent / f".delete-{monitor_profile_id}-{uuid.uuid4().hex[:8]}"
+    for source in sorted(asset_root.rglob("*"), key=lambda path: len(path.parts), reverse=True):
+        if not source.is_file():
+            continue
+        resolved_source = source.resolve()
+        if resolved_source in referenced_paths:
+            continue
+        target = staging_root / source.relative_to(asset_root)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(source), str(target))
+        staged.append((source, target))
+
+    remove_empty_asset_dirs(asset_root, asset_root.parent)
+    return staged
+
+
+def commit_staged_asset_deletes(staged_paths: list[tuple[Path, Path]]) -> None:
+    roots = staged_delete_roots(staged_paths)
+    for root in sorted(roots, key=lambda path: len(path.parts), reverse=True):
+        try:
+            shutil.rmtree(root)
+        except OSError as exc:
+            logger.debug("failed to remove staged monitor profile asset directory", exc_info=True)
+            raise OSError("Monitor profile assets could not be deleted.") from exc
+
+
+def rollback_staged_asset_deletes(staged_paths: list[tuple[Path, Path]]) -> None:
+    for source, staged in reversed(staged_paths):
+        if not staged.exists():
+            continue
+        source.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(staged), str(source))
+    for root in staged_delete_roots(staged_paths):
+        try:
+            shutil.rmtree(root)
+        except OSError:
+            logger.debug("failed to clean rolled back staging directory", exc_info=True)
+
+
+def staged_delete_roots(staged_paths: list[tuple[Path, Path]]) -> set[Path]:
+    roots: set[Path] = set()
+    for _source, staged in staged_paths:
+        for parent in (staged, *staged.parents):
+            if parent.name.startswith(".delete-"):
+                roots.add(parent)
+                break
+    return roots
+
+
+def remove_empty_asset_dirs(path: Path, stop_at: Path) -> None:
+    current = path
+    if current.is_file():
+        current = current.parent
+    while True:
+        if current == stop_at:
+            break
+        try:
+            current.rmdir()
+        except OSError:
+            break
+        current = current.parent
+
+
 def atomic_write_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temp_name = tempfile.mkstemp(

@@ -9,16 +9,19 @@ from app_icon import application_icon
 from config_manager import (
     atomic_write_json,
     config_file_path,
+    commit_staged_asset_deletes,
     effective_config_for_monitor,
     ensure_monitor_profile,
     list_user_profile_records,
     load_user_profile_json,
     load_config,
     profile_for_monitor,
+    rollback_staged_asset_deletes,
     root_config_from_runtime,
     runtime_config_from_profile_json,
     safe_profile_id,
     save_config,
+    stage_delete_monitor_profile_assets,
     update_monitor_profile,
     validate_config,
 )
@@ -298,6 +301,166 @@ class ToolbarManager(QtCore.QObject):
             logger.exception("tray monitor selection failed")
             self.show_tray_message(f"Toolbar monitor could not be changed: {exc}")
             self.rebuild_tray_toolbars_menu()
+
+    def monitoring_mode(self) -> str:
+        return str(self.config.get("monitoring", {}).get("mode") or "single")
+
+    def selected_monitor_ids(self, config: dict | None = None) -> list[str]:
+        source = config or self.config
+        monitoring = source.get("monitoring", {})
+        if not isinstance(monitoring, dict):
+            return []
+        return self.unique_ids(
+            [str(item) for item in monitoring.get("selected_monitor_ids", []) if str(item or "").strip()]
+        )
+
+    def is_monitor_selected(self, monitor_id: str) -> bool:
+        return str(monitor_id or "").strip() in self.selected_monitor_ids()
+
+    def can_disable_toolbar_for_monitor(self, monitor_id: str) -> bool:
+        monitor_id = str(monitor_id or "").strip()
+        mode = self.monitoring_mode()
+        if mode not in {"selected_shared", "per_monitor"}:
+            return False
+        selected_connected = [item for item in self.desired_monitor_ids() if item in self.selected_monitor_ids()]
+        return monitor_id in selected_connected and len(selected_connected) > 1
+
+    def can_move_toolbar_for_monitor(self, monitor_id: str) -> bool:
+        monitor_id = str(monitor_id or "").strip()
+        return (
+            self.monitoring_mode() == "per_monitor"
+            and monitor_id in self.selected_monitor_ids()
+            and profile_for_monitor(self.config, monitor_id) is not None
+        )
+
+    def can_delete_toolbar_for_monitor(self, monitor_id: str) -> bool:
+        monitor_id = str(monitor_id or "").strip()
+        return self.can_move_toolbar_for_monitor(monitor_id) and self.can_disable_toolbar_for_monitor(monitor_id)
+
+    def move_toolbar_to_monitor(self, source_monitor_id: str, destination_monitor_id: str) -> None:
+        source_monitor_id = str(source_monitor_id or "").strip()
+        destination_monitor_id = str(destination_monitor_id or "").strip()
+        if not source_monitor_id or not destination_monitor_id or source_monitor_id == destination_monitor_id:
+            return
+        previous_config = copy.deepcopy(self.config)
+        try:
+            updated = validate_config(copy.deepcopy(self.config), len(QtGui.QGuiApplication.screens()), connected_monitor_ids())
+            if str(updated.get("monitoring", {}).get("mode") or "single") != "per_monitor":
+                raise ValueError("Toolbar moves are only available for unique per-monitor toolbars.")
+            profiles = updated.setdefault("toolbar_profiles", {})
+            if not isinstance(profiles, dict):
+                raise ValueError("Toolbar profile data is invalid.")
+            if source_monitor_id not in profiles:
+                raise ValueError("This monitor does not have a unique saved toolbar profile.")
+            if destination_monitor_id in profiles:
+                raise ValueError("The destination monitor already has a saved toolbar profile.")
+
+            profiles[destination_monitor_id] = copy.deepcopy(profiles[source_monitor_id])
+            profiles.pop(source_monitor_id, None)
+            selected_ids = [
+                destination_monitor_id if item == source_monitor_id else item
+                for item in self.selected_monitor_ids(updated)
+            ]
+            if destination_monitor_id not in selected_ids:
+                selected_ids.append(destination_monitor_id)
+            selected_ids = [item for item in self.unique_ids(selected_ids) if item != source_monitor_id]
+            updated.setdefault("monitoring", {})["selected_monitor_ids"] = selected_ids
+            self.synchronize_legacy_screen_index(updated, selected_ids)
+            self.apply_config(updated)
+            self.refresh_tray_menu()
+        except Exception as exc:
+            self.config = previous_config
+            logger.exception("toolbar move failed")
+            raise OSError(str(exc) or "The toolbar could not be moved.") from exc
+
+    def swap_monitor_toolbars(self, source_monitor_id: str, destination_monitor_id: str) -> None:
+        source_monitor_id = str(source_monitor_id or "").strip()
+        destination_monitor_id = str(destination_monitor_id or "").strip()
+        if not source_monitor_id or not destination_monitor_id or source_monitor_id == destination_monitor_id:
+            return
+        previous_config = copy.deepcopy(self.config)
+        try:
+            updated = validate_config(copy.deepcopy(self.config), len(QtGui.QGuiApplication.screens()), connected_monitor_ids())
+            if str(updated.get("monitoring", {}).get("mode") or "single") != "per_monitor":
+                raise ValueError("Toolbar swaps are only available for unique per-monitor toolbars.")
+            profiles = updated.setdefault("toolbar_profiles", {})
+            if not isinstance(profiles, dict):
+                raise ValueError("Toolbar profile data is invalid.")
+            if source_monitor_id not in profiles or destination_monitor_id not in profiles:
+                raise ValueError("Both monitors must have saved toolbar profiles to swap.")
+            profiles[source_monitor_id], profiles[destination_monitor_id] = (
+                copy.deepcopy(profiles[destination_monitor_id]),
+                copy.deepcopy(profiles[source_monitor_id]),
+            )
+            selected_ids = self.unique_ids([*self.selected_monitor_ids(updated), source_monitor_id, destination_monitor_id])
+            updated.setdefault("monitoring", {})["selected_monitor_ids"] = selected_ids
+            self.synchronize_legacy_screen_index(updated, selected_ids)
+            self.apply_config(updated)
+            self.refresh_tray_menu()
+        except Exception as exc:
+            self.config = previous_config
+            logger.exception("toolbar swap failed")
+            raise OSError(str(exc) or "The toolbars could not be swapped.") from exc
+
+    def disable_toolbar_for_monitor(self, monitor_id: str) -> None:
+        monitor_id = str(monitor_id or "").strip()
+        if not monitor_id:
+            return
+        previous_config = copy.deepcopy(self.config)
+        try:
+            if not self.can_disable_toolbar_for_monitor(monitor_id):
+                raise ValueError("At least one other toolbar must remain active.")
+            updated = copy.deepcopy(self.config)
+            selected_ids = [item for item in self.selected_monitor_ids(updated) if item != monitor_id]
+            updated.setdefault("monitoring", {})["selected_monitor_ids"] = selected_ids
+            self.synchronize_legacy_screen_index(updated, selected_ids)
+            self.apply_config(updated)
+            self.refresh_tray_menu()
+        except Exception as exc:
+            self.config = previous_config
+            logger.exception("toolbar disable failed")
+            raise OSError(str(exc) or "The toolbar could not be disabled.") from exc
+
+    def delete_toolbar_for_monitor(self, monitor_id: str) -> None:
+        monitor_id = str(monitor_id or "").strip()
+        if not monitor_id:
+            return
+        previous_config = copy.deepcopy(self.config)
+        staged_deletes: list[tuple] = []
+        config_saved = False
+        try:
+            if not self.can_delete_toolbar_for_monitor(monitor_id):
+                raise ValueError("This toolbar cannot be deleted because at least one other active toolbar must remain.")
+            updated = validate_config(copy.deepcopy(self.config), len(QtGui.QGuiApplication.screens()), connected_monitor_ids())
+            profiles = updated.setdefault("toolbar_profiles", {})
+            if not isinstance(profiles, dict):
+                raise ValueError("Toolbar profile data is invalid.")
+            profile = profiles.get(monitor_id)
+            if not isinstance(profile, dict):
+                raise ValueError("This monitor does not have a unique saved toolbar profile.")
+            monitor_profile_id = safe_profile_id(str(profile.get("profile_id") or ""))
+            profiles.pop(monitor_id, None)
+            selected_ids = [item for item in self.selected_monitor_ids(updated) if item != monitor_id]
+            updated.setdefault("monitoring", {})["selected_monitor_ids"] = selected_ids
+            self.synchronize_legacy_screen_index(updated, selected_ids)
+            staged_deletes = stage_delete_monitor_profile_assets(updated, monitor_profile_id)
+            self.apply_config(updated)
+            config_saved = True
+            commit_staged_asset_deletes(staged_deletes)
+            self.refresh_tray_menu()
+        except Exception as exc:
+            rollback_staged_asset_deletes(staged_deletes)
+            if config_saved:
+                try:
+                    self.apply_config(previous_config)
+                except Exception:
+                    logger.exception("toolbar delete config rollback failed")
+                    self.config = previous_config
+                    self.reconcile_toolbar_windows()
+            else:
+                self.config = previous_config
+            logger.exception("toolbar delete failed")
+            raise OSError(str(exc) or "The toolbar could not be deleted.") from exc
 
     def synchronize_legacy_screen_index(self, config: dict, selected_ids: list[str]) -> None:
         behavior = config.setdefault("behavior", {})
