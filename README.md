@@ -305,6 +305,14 @@ Manual multi-monitor validation is documented in [MULTI_MONITOR_TEST_CHECKLIST.m
 - Profile exports include profile-owned icons and logos, but not external files or programs referenced by launcher targets.
 - Folder launcher drops operate on real filesystem items. Review the destination folder and conflict prompts before choosing replace or move actions.
 
+## License
+This project is licensed under a custom **Non-Commercial GPLv3 License**. 
+* 🚫 **No Commercial Use**: You cannot use this code to make money.
+* 🔄 **Share-Alike**: Any modifications you distribute must be open-sourced under these same terms.
+* 🛡️ **Patent Protected**: Explicit protections against patent lawsuits are included.
+See the [LICENSE](LICENSE) file for full details.
+
+
 <hr>
 
 <p align="center">
