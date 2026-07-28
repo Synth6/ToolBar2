@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ToolBar2 Help</title>
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <button id="back-to-top" class="back-to-top" type="button" aria-label="Back to top">Top</button>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <img class="brand-logo" src="../img/ToolBar2.png" alt="ToolBar2 logo">
+        <div>
+          <h1>ToolBar2 Help</h1>
+          <p class="subtle">Offline help for the current ToolBar2 build.</p>
+        </div>
+      </div>
+      <label class="search-label" for="topic-search">Search help</label>
+      <input id="topic-search" type="search" placeholder="Search settings, actions, or topics">
+      <nav class="toc" aria-label="Table of contents">
+        <a href="#getting-started">Getting Started</a>
+        <a href="#appearance">Appearance</a>
+        <a href="#behavior">Behavior</a>
+        <a href="#profiles">Profiles</a>
+        <a href="#logo">Logo</a>
+        <a href="#menus">Menus</a>
+        <a href="#launchers">Launchers</a>
+        <a href="#folder-menus">Folder Menus</a>
+        <a href="#web-search">Web Search Bar</a>
+        <a href="#drag-drop">Drag and Drop</a>
+        <a href="#accept-dropped-files">Accept Dropped Files</a>
+        <a href="#multi-monitor">Multi-Monitor Toolbars</a>
+        <a href="#import-export">Import and Export Profiles</a>
+        <a href="#troubleshooting">Troubleshooting</a>
+        <a href="#keyboard-mouse">Keyboard and Mouse Actions</a>
+      </nav>
+    </aside>
+    <main id="main" class="content">
+      <div class="intro-card searchable" data-keywords="ToolBar2 help offline source pyinstaller browser">
+        <p>ToolBar2 is a desktop toolbar for menus, top-level launchers, logo actions, web search, drag-and-drop shortcuts, and per-monitor toolbar profiles.</p>
+        <div class="callout tip">
+          <strong>Tip</strong>
+          <span>Use the search field on the left for fast filtering. Searches for <em>padding</em>, <em>logo</em>, <em>web search</em>, and <em>dropped files</em> are especially useful when learning the toolbar layout options.</span>
+        </div>
+      </div>
+
+      <section id="getting-started" class="topic" data-title="Getting Started" data-keywords="start basics toolbar settings tray profiles save cancel">
+        <details open>
+          <summary>Getting Started</summary>
+          <div class="topic-body">
+            <div class="example-panel searchable">
+              <h3>Typical setup</h3>
+              <p>1. Open <strong>Toolbar Settings...</strong> from the tray or toolbar.</p>
+              <p>2. Adjust <strong>Appearance</strong> and <strong>Behavior</strong>.</p>
+              <p>3. Configure the <strong>Logo</strong> tab and the <strong>Menus</strong> tab.</p>
+              <p>4. Press <strong>Save</strong> to keep the changes or <strong>Cancel</strong> to restore the previous live toolbar state.</p>
+            </div>
+            <div class="callout default searchable">
+              <strong>Default startup layout</strong>
+              <span>ToolBar2 starts with one top-level menu named <strong>Tools</strong>, the logo visible, the Settings gear shown, and the Web Search bar turned off.</span>
+            </div>
+            <p class="searchable">The toolbar and Settings window both support live preview. Most settings apply immediately while the Settings window is open. Cancel rolls the visible toolbar back to the previously saved configuration.</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="appearance" class="topic" data-title="Appearance" data-keywords="appearance colors transparency size spacing toolbar controls opacity padding width alignment">
+        <details open>
+          <summary>Appearance</summary>
+          <div class="topic-body">
+            <h3 class="searchable">Colors and Transparency</h3>
+            <div class="settings-grid">
+              <article class="setting-card searchable">
+                <h4>Toolbar background</h4>
+                <p>Controls the base color behind the entire toolbar.</p>
+                <p><strong>Choices:</strong> any color selected from the color picker.</p>
+                <p><strong>Default:</strong> <code>#202020</code>.</p>
+                <p><strong>Example:</strong> set a darker gray to make menu buttons stand out more clearly.</p>
+                <p><strong>Interaction:</strong> combined with <strong>Toolbar background opacity</strong>.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Button background</h4>
+                <p>Base button fill used by top-level menu buttons and standard controls.</p>
+                <p><strong>Choices:</strong> any color.</p>
+                <p><strong>Default:</strong> <code>#3b3b3b</code>.</p>
+                <p><strong>Example:</strong> use a muted blue to match brand colors.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Button hover</h4>
+                <p>Hover fill for top-level buttons and interactive text fields.</p>
+                <p><strong>Choices:</strong> any color.</p>
+                <p><strong>Default:</strong> <code>#505050</code>.</p>
+                <p><strong>Example:</strong> brighten hover slightly so button focus is obvious without overwhelming the toolbar.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Button text</h4>
+                <p>Foreground text color used on toolbar buttons and fields.</p>
+                <p><strong>Choices:</strong> any color.</p>
+                <p><strong>Default:</strong> <code>#ffffff</code>.</p>
+                <p><strong>Example:</strong> use near-white when the button background is dark.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Menu background</h4>
+                <p>Background color for drop-down menus.</p>
+                <p><strong>Choices:</strong> any color.</p>
+                <p><strong>Default:</strong> <code>#2c2c2c</code>.</p>
+                <p><strong>Example:</strong> match it to your toolbar or make it slightly darker for separation.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Menu text</h4>
+                <p>Foreground color for menu items.</p>
+                <p><strong>Choices:</strong> any color.</p>
+                <p><strong>Default:</strong> <code>#ffffff</code>.</p>
+                <p><strong>Example:</strong> pair bright text with dark menu backgrounds for readability.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Border color</h4>
+                <p>Border color shared by toolbar buttons, menus, and text fields.</p>
+                <p><strong>Choices:</strong> any color.</p>
+                <p><strong>Default:</strong> <code>#606060</code>.</p>
+                <p><strong>Example:</strong> use a lighter border when you want a crisp toolbar outline.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Toolbar background opacity</h4>
+                <p>Opacity for the toolbar surface only.</p>
+                <p><strong>Range:</strong> <code>0.10</code> to <code>1.00</code>.</p>
+                <p><strong>Default:</strong> <code>0.95</code>.</p>
+                <p><strong>Example:</strong> lower it to <code>0.75</code> for a semi-transparent look.</p>
+                <p><strong>Interaction:</strong> the toolbar background color is converted to RGBA using this value.</p>
+              </article>
+            </div>
+
+            <h3 class="searchable">Size and Spacing</h3>
+            <div class="settings-grid">
+              <article class="setting-card searchable">
+                <h4>Toolbar height</h4>
+                <p>Requested total toolbar height.</p>
+                <p><strong>Range:</strong> <code>16</code> to <code>240</code>.</p>
+                <p><strong>Default:</strong> <code>40</code>.</p>
+                <p><strong>Example:</strong> use <code>32</code> for a compact toolbar or <code>64</code> for larger buttons.</p>
+                <p><strong>Interaction:</strong> buttons, logo, icons, text, Web Search field, gear, and Exit button automatically shrink to fit. Top/bottom edge padding may also be reduced automatically.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Auto toolbar width</h4>
+                <p>Makes the toolbar span the current monitor width automatically.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> off.</p>
+                <p><strong>Example:</strong> enable it for a full-width toolbar on each selected monitor.</p>
+                <p><strong>Interaction:</strong> when enabled, <strong>Toolbar width</strong> is ignored.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Toolbar width</h4>
+                <p>Requested width when automatic width is turned off.</p>
+                <p><strong>Range:</strong> <code>300</code> to <code>3000</code>.</p>
+                <p><strong>Default:</strong> <code>1000</code>.</p>
+                <p><strong>Example:</strong> set <code>1400</code> to make room for more top-level items without stretching across the full monitor.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Horizontal alignment</h4>
+                <p>Positions a custom-width toolbar on the monitor.</p>
+                <p><strong>Choices:</strong> <code>Left</code>, <code>Center</code>, <code>Right</code>.</p>
+                <p><strong>Default:</strong> <code>Center</code>.</p>
+                <p><strong>Example:</strong> choose <code>Right</code> for a narrow toolbar anchored to the upper-right corner.</p>
+                <p><strong>Interaction:</strong> only affects custom-width mode.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Horizontal offset</h4>
+                <p>Moves a custom-width toolbar left or right in pixels.</p>
+                <p><strong>Range:</strong> <code>-3000</code> to <code>3000</code>.</p>
+                <p><strong>Default:</strong> <code>0</code>.</p>
+                <p><strong>Example:</strong> use <code>32</code> to nudge a centered toolbar slightly right.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Button height</h4>
+                <p>Requested top-level button height.</p>
+                <p><strong>Range:</strong> <code>12</code> to <code>96</code>.</p>
+                <p><strong>Default:</strong> <code>36</code>.</p>
+                <p><strong>Example:</strong> reduce it to <code>28</code> on a compact toolbar.</p>
+                <p><strong>Interaction:</strong> the effective button height is automatically reduced when the toolbar is too short.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Corner radius</h4>
+                <p>Rounds the corners of standard toolbar buttons and fields.</p>
+                <p><strong>Range:</strong> <code>0</code> to <code>24</code>.</p>
+                <p><strong>Default:</strong> <code>6</code>.</p>
+                <p><strong>Example:</strong> use <code>0</code> for square buttons or <code>12</code> for softer corners.</p>
+                <p><strong>Interaction:</strong> the effective radius is capped at half the effective button height.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Left/right edge padding</h4>
+                <p>Inside spacing at the far left and right edges of the toolbar.</p>
+                <p><strong>Range:</strong> <code>0</code> to <code>100</code>.</p>
+                <p><strong>Default:</strong> <code>8</code>.</p>
+                <p><strong>Example:</strong> increase it to <code>20</code> for more breathing room at the ends.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Top/bottom edge padding</h4>
+                <p>Equal inside spacing at the top and bottom of the toolbar.</p>
+                <p><strong>Range:</strong> <code>0</code> to <code>60</code>.</p>
+                <p><strong>Default:</strong> <code>4</code>.</p>
+                <p><strong>Example:</strong> use <code>10</code> for a taller visual margin around buttons.</p>
+                <p><strong>Interaction:</strong> ToolBar2 automatically reduces the effective padding if the toolbar is too short to fit the controls.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Menu button spacing</h4>
+                <p>Spacing between top-level menus, top-level launchers, and the Web Search bar.</p>
+                <p><strong>Range:</strong> <code>0</code> to <code>50</code>.</p>
+                <p><strong>Default:</strong> <code>10</code>.</p>
+                <p><strong>Example:</strong> set <code>4</code> for a denser toolbar layout.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Top menu position</h4>
+                <p>Controls where the top-level toolbar buttons appear inside the toolbar.</p>
+                <p><strong>Choices:</strong> <code>Left</code>, <code>Center</code>, <code>Right</code>.</p>
+                <p><strong>Default:</strong> <code>Center</code>.</p>
+                <p><strong>Example:</strong> choose <code>Left</code> when you want menus aligned near the logo.</p>
+              </article>
+            </div>
+
+            <h3 class="searchable">Toolbar Controls</h3>
+            <div class="settings-grid">
+              <article class="setting-card searchable">
+                <h4>Show Settings gear</h4>
+                <p>Shows the gear button on the toolbar.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> on.</p>
+                <p><strong>Example:</strong> turn it off on a shared kiosk monitor but keep settings reachable from the tray.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Show Exit button</h4>
+                <p>Shows the red Exit button on the toolbar.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> off.</p>
+                <p><strong>Example:</strong> enable it if you want a visible close control on the toolbar.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Show Web Search bar</h4>
+                <p>Shows or hides the built-in top-level Web Search bar.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> off.</p>
+                <p><strong>Example:</strong> enable it to get a movable search field between top-level items.</p>
+                <p><strong>Interaction:</strong> when enabled it appears in toolbar order and in the Menus tree as <strong>Web Search Bar</strong>.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Search bar width</h4>
+                <p>Requested width of the Web Search bar.</p>
+                <p><strong>Range:</strong> <code>100</code> to <code>500</code>.</p>
+                <p><strong>Default:</strong> <code>180</code>.</p>
+                <p><strong>Example:</strong> increase it to <code>260</code> when you type longer searches.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Placeholder text</h4>
+                <p>Placeholder text shown inside the Web Search bar.</p>
+                <p><strong>Choices:</strong> any text.</p>
+                <p><strong>Default:</strong> <code>Search the web...</code>.</p>
+                <p><strong>Example:</strong> use <code>Search docs and sites...</code> for a custom workflow.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Search engine</h4>
+                <p>Provider used when you press Enter in the Web Search bar.</p>
+                <p><strong>Choices:</strong> <code>Google</code>, <code>Bing</code>, <code>DuckDuckGo</code>, <code>Yahoo</code>, <code>Custom</code>.</p>
+                <p><strong>Default:</strong> <code>Google</code>.</p>
+                <p><strong>Example:</strong> choose <code>DuckDuckGo</code> if you prefer a different search provider.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Custom search URL</h4>
+                <p>URL template used only when <strong>Search engine</strong> is set to <code>Custom</code>.</p>
+                <p><strong>Requirement:</strong> must contain <code>{query}</code>.</p>
+                <p><strong>Default:</strong> blank.</p>
+                <p><strong>Example:</strong> <code>https://example.com/search?q={query}</code>.</p>
+                <p><strong>Interaction:</strong> ToolBar2 warns instead of searching if the template is blank or missing <code>{query}</code>.</p>
+              </article>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="behavior" class="topic" data-title="Behavior" data-keywords="behavior trigger hide delay animation hover monitor mode start with windows">
+        <details open>
+          <summary>Behavior</summary>
+          <div class="topic-body">
+            <div class="settings-grid">
+              <article class="setting-card searchable">
+                <h4>Toolbar mode</h4>
+                <p>Controls how toolbar configurations are shared across monitors.</p>
+                <p><strong>Choices:</strong> <code>One monitor</code>, <code>Selected monitors - same toolbar</code>, <code>All connected monitors - same toolbar</code>, <code>Selected monitors - unique toolbar on each</code>.</p>
+                <p><strong>Default:</strong> <code>One monitor</code>.</p>
+                <p><strong>Example:</strong> use the unique-toolbar mode when each monitor needs different menus or logo actions.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Trigger height</h4>
+                <p>Height of the top-edge activation zone used to reveal the toolbar.</p>
+                <p><strong>Range:</strong> <code>1</code> to <code>30</code>.</p>
+                <p><strong>Default:</strong> <code>5</code>.</p>
+                <p><strong>Example:</strong> increase it to <code>10</code> if revealing the toolbar feels too precise.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Hide delay (ms)</h4>
+                <p>Delay before the toolbar hides after the pointer leaves and nothing is holding it open.</p>
+                <p><strong>Range:</strong> <code>100</code> to <code>5000</code>.</p>
+                <p><strong>Default:</strong> <code>750</code>.</p>
+                <p><strong>Example:</strong> use <code>1500</code> if you want more time to re-enter the toolbar.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Animation duration (ms)</h4>
+                <p>Slide animation duration when the toolbar shows or hides.</p>
+                <p><strong>Range:</strong> <code>0</code> to <code>2000</code>.</p>
+                <p><strong>Default:</strong> <code>200</code>.</p>
+                <p><strong>Example:</strong> set <code>0</code> for instant movement or <code>400</code> for a smoother reveal.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Open toolbar menus on hover</h4>
+                <p>Allows top-level menus to open from hover instead of requiring only a click.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> on.</p>
+                <p><strong>Example:</strong> turn it off if you prefer explicit clicks while moving across the toolbar.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Hover delay (ms)</h4>
+                <p>Delay before a hovered toolbar menu opens when hover opening is enabled.</p>
+                <p><strong>Range:</strong> <code>0</code> to <code>1000</code>.</p>
+                <p><strong>Default:</strong> <code>200</code>.</p>
+                <p><strong>Example:</strong> use <code>0</code> for immediate hover opening.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Confirm before exiting</h4>
+                <p>Adds a confirmation prompt before the toolbar exits completely.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> off.</p>
+                <p><strong>Example:</strong> enable it to avoid closing the toolbar accidentally from the Exit button or tray menu.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Start ToolBar2 with Windows</h4>
+                <p>Registers ToolBar2 to start when you sign in to Windows.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> off.</p>
+                <p><strong>Example:</strong> enable it on your main workstation so the toolbar is ready after sign-in.</p>
+                <p><strong>Interaction:</strong> the checkbox is only available when the compiled executable supports startup registration.</p>
+              </article>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="profiles" class="topic" data-title="Profiles" data-keywords="profiles user profiles saved profiles per monitor copy reset import export">
+        <details open>
+          <summary>Profiles</summary>
+          <div class="topic-body searchable">
+            <p>ToolBar2 stores a runtime configuration plus saved toolbar profiles. In per-monitor mode, each selected monitor can have its own toolbar profile while still sharing the same application-level settings and user-profile metadata.</p>
+            <div class="example-panel">
+              <h3>Useful profile actions</h3>
+              <p><strong>Copy Toolbar From...</strong> copies another monitor toolbar into the current monitor profile.</p>
+              <p><strong>Reset This Toolbar</strong> resets only the currently selected monitor toolbar profile.</p>
+              <p><strong>Saved Profiles</strong> lets you keep reusable toolbars for import, export, and reassignment.</p>
+            </div>
+            <div class="callout warning">
+              <strong>Note</strong>
+              <span>Save keeps the current live preview. Cancel restores the last saved runtime configuration, including toolbar order, logo settings, and the Web Search bar position.</span>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="logo" class="topic" data-title="Logo" data-keywords="logo appearance logo menu logo height maximum width opacity tooltip left-click action">
+        <details open>
+          <summary>Logo</summary>
+          <div class="topic-body">
+            <h3 class="searchable">Appearance</h3>
+            <div class="settings-grid">
+              <article class="setting-card searchable">
+                <h4>Show logo</h4>
+                <p>Shows or hides the logo at the left side of the toolbar.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> on.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Logo image path</h4>
+                <p>Path to the current logo image.</p>
+                <p><strong>Choices:</strong> imported image file, pasted image, dropped image, or web image URL.</p>
+                <p><strong>Default:</strong> <code>img/ToolBar2.png</code>.</p>
+                <p><strong>Example:</strong> use <strong>Restore Default Logo</strong> to go back to the bundled logo.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Logo height</h4>
+                <p>Requested logo height.</p>
+                <p><strong>Range:</strong> <code>16</code> to <code>200</code>.</p>
+                <p><strong>Default:</strong> <code>48</code>.</p>
+                <p><strong>Interaction:</strong> the displayed height is automatically reduced when the toolbar is too short or top/bottom edge padding leaves less room.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Maximum width</h4>
+                <p>Caps the displayed logo width.</p>
+                <p><strong>Range:</strong> <code>32</code> to <code>600</code>.</p>
+                <p><strong>Default:</strong> <code>640</code> in the validated config, with the editor itself clamped to <code>32</code> to <code>600</code>.</p>
+                <p><strong>Example:</strong> lower it if a wide logo crowds nearby menus.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Logo opacity</h4>
+                <p>Opacity of the logo image only.</p>
+                <p><strong>Range:</strong> <code>0.10</code> to <code>1.00</code>.</p>
+                <p><strong>Default:</strong> <code>1.00</code>.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Preserve aspect ratio</h4>
+                <p>Keeps the logo image from stretching when it is resized.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> on.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Tooltip</h4>
+                <p>Tooltip text shown when the pointer rests on the logo.</p>
+                <p><strong>Choices:</strong> any text.</p>
+                <p><strong>Default:</strong> <code>ToolBar2 by Ron</code>.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Left-click action</h4>
+                <p>Controls what happens when the logo is left-clicked.</p>
+                <p><strong>Choices:</strong> <code>Do nothing</code>, <code>Open logo menu</code>, <code>Open first enabled item</code>, <code>Custom launcher</code>.</p>
+                <p><strong>Default:</strong> <code>Do nothing</code>.</p>
+                <p><strong>Interaction:</strong> <strong>Custom left-click launcher</strong> matters only when the action is <code>Custom launcher</code>.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Custom left-click launcher</h4>
+                <p>Opens the standard launcher editor for a logo-specific launcher.</p>
+                <p><strong>Choices:</strong> any launcher item.</p>
+                <p><strong>Example:</strong> point the logo at a documentation site or a frequent local tool.</p>
+              </article>
+            </div>
+
+            <h3 class="searchable">Logo Menu</h3>
+            <p class="searchable">The Logo tab also has a menu editor. It supports nested menu items under the logo and uses the same building blocks as the main Menus tab: launchers, submenus, headings, and separators. The logo menu is independent from the top-level toolbar menus.</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="menus" class="topic" data-title="Menus" data-keywords="menus menu properties top-level menu top launcher submenu heading separator icon only duplicate move">
+        <details open>
+          <summary>Menus</summary>
+          <div class="topic-body searchable">
+            <p>The Menus tab manages the top-level toolbar order plus nested menu content. The tree can contain normal top-level menus, top-level launchers, and the special built-in <strong>Web Search Bar</strong> row when it is enabled.</p>
+            <div class="example-panel">
+              <h3>Top-level item types</h3>
+              <p><strong>Menu</strong>: a button that opens a drop-down list.</p>
+              <p><strong>Top-level launcher</strong>: a button that launches directly.</p>
+              <p><strong>Web Search Bar</strong>: the built-in search field; movable but not stored in <code>config["menus"]</code>.</p>
+            </div>
+            <div class="settings-grid">
+              <article class="setting-card searchable">
+                <h4>Menu name</h4>
+                <p>Display text for a top-level menu button.</p>
+                <p><strong>Default:</strong> new top-level menus use <code>Menu</code>.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Enabled</h4>
+                <p>Shows whether a top-level menu button is active.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Interaction:</strong> disabled menus remain in the tree and toolbar but appear italicized or dimmed.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Icon</h4>
+                <p>Custom icon path for a top-level menu.</p>
+                <p><strong>Choices:</strong> imported image, dropped image, default icon, or removed icon.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Icon only</h4>
+                <p>Shows only the menu icon when a custom or default icon is available.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> off.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Use custom toolbar button colors</h4>
+                <p>Lets a top-level menu override the global button colors.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> off.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Button background / Button hover / Button text / Button border</h4>
+                <p>Per-menu colors available when custom toolbar button colors are enabled.</p>
+                <p><strong>Choices:</strong> any color.</p>
+                <p><strong>Interaction:</strong> <strong>Reset Colors to Global Defaults</strong> restores these fields to the current global Appearance colors.</p>
+              </article>
+            </div>
+            <p class="searchable">Headings and separators are only valid inside menus or submenus. Submenus can contain more nested items. Drag-and-drop menu editing remains enabled for normal menu content.</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="launchers" class="topic" data-title="Launchers" data-keywords="launchers display name target type arguments working directory python execution mode accept dropped files icon">
+        <details open>
+          <summary>Launchers</summary>
+          <div class="topic-body">
+            <div class="settings-grid">
+              <article class="setting-card searchable">
+                <h4>Display name</h4>
+                <p>Name shown for the launcher button or menu item.</p>
+                <p><strong>Default:</strong> blank launchers resolve to <code>Launcher</code> on save, and some targets can auto-fill the name until you edit it manually.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Target</h4>
+                <p>File path, folder path, website URL, or command target for the launcher.</p>
+                <p><strong>Requirement:</strong> must not be empty when saving.</p>
+                <p><strong>Interaction:</strong> Browse opens a file picker for most target types, a folder picker for <code>Folder</code>, and leaves website or command entry manual.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Target type</h4>
+                <p>Determines how the target is treated.</p>
+                <p><strong>Choices:</strong> <code>Auto Detect</code>, <code>Program</code>, <code>Command Script</code>, <code>PowerShell Script</code>, <code>Python Script</code>, <code>File</code>, <code>Folder</code>, <code>Website</code>.</p>
+                <p><strong>Default:</strong> <code>Auto Detect</code>.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Arguments</h4>
+                <p>Additional command-line arguments passed to the launcher target.</p>
+                <p><strong>Choices:</strong> any text.</p>
+                <p><strong>Example:</strong> add a document path or command option for a script.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Working directory</h4>
+                <p>Folder used as the launcher working directory.</p>
+                <p><strong>Choices:</strong> any existing folder path.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Python execution mode</h4>
+                <p>Controls how Python scripts start.</p>
+                <p><strong>Choices:</strong> <code>Automatic</code>, <code>Console Python</code>, <code>Windowed Python</code>.</p>
+                <p><strong>Default:</strong> <code>Automatic</code>.</p>
+                <p><strong>Interaction:</strong> only enabled when <strong>Target type</strong> is <code>Python Script</code>.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Enabled</h4>
+                <p>Turns an individual launcher on or off.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> on.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Accept dropped files</h4>
+                <p>Allows the launcher to receive dragged local files. For folder targets the UI wording becomes <strong>Accept dropped items</strong>.</p>
+                <p><strong>Choices:</strong> on or off.</p>
+                <p><strong>Default:</strong> off.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>When items are dropped</h4>
+                <p>Folder-only action for dropped content.</p>
+                <p><strong>Choices:</strong> <code>Move to this folder</code>, <code>Copy to this folder</code>, <code>Ask each time</code>.</p>
+                <p><strong>Default:</strong> <code>Move to this folder</code>.</p>
+              </article>
+              <article class="setting-card searchable">
+                <h4>Icon</h4>
+                <p>Custom icon for the launcher.</p>
+                <p><strong>Choices:</strong> imported image, EXE icon, web image URL, dropped image, or target icon fallback.</p>
+                <p><strong>Interaction:</strong> top-level launchers also support <strong>Icon only</strong> and <strong>Use custom toolbar button colors</strong>.</p>
+              </article>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="folder-menus" class="topic" data-title="Folder Menus" data-keywords="folder menus folders menu folder_menu drag and drop">
+        <details open>
+          <summary>Folder Menus</summary>
+          <div class="topic-body searchable">
+            <p>Folder menus are top-level menu buttons backed by a folder path. ToolBar2 can scan folders, build menu entries from the contents, and keep those top-level buttons in the same ordering system as menus, top-level launchers, and the Web Search bar.</p>
+            <div class="callout tip">
+              <strong>Tip</strong>
+              <span>If a folder menu points to a folder that becomes unavailable, ToolBar2 keeps the toolbar button but shows the folder as unavailable instead of crashing.</span>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="web-search" class="topic" data-title="Web Search Bar" data-keywords="web search bar google bing duckduckgo yahoo custom query browser">
+        <details open>
+          <summary>Web Search Bar</summary>
+          <div class="topic-body searchable">
+            <p>The Web Search bar is a built-in top-level toolbar item. It is not stored in <code>config["menus"]</code>, but it participates in toolbar order, the Menus tree, drag-and-drop positioning, and Move Left/Right actions.</p>
+            <div class="example-panel">
+              <h3>Search flow</h3>
+              <p>1. Type text into the Web Search bar.</p>
+              <p>2. Press Enter.</p>
+              <p>3. ToolBar2 trims the text, URL-encodes it, builds the selected provider URL, and opens it in your default Windows browser.</p>
+              <p>4. The field clears only after the browser accepts the URL.</p>
+            </div>
+            <div class="callout warning">
+              <strong>Custom URL rule</strong>
+              <span>Custom search URLs must include <code>{query}</code>. ToolBar2 warns instead of searching if the template is invalid.</span>
+            </div>
+            <div class="settings-grid">
+              <article class="setting-card searchable">
+                <h4>Provider URLs</h4>
+                <p><strong>Google:</strong> <code>https://www.google.com/search?q={query}</code></p>
+                <p><strong>Bing:</strong> <code>https://www.bing.com/search?q={query}</code></p>
+                <p><strong>DuckDuckGo:</strong> <code>https://duckduckgo.com/?q={query}</code></p>
+                <p><strong>Yahoo:</strong> <code>https://search.yahoo.com/search?p={query}</code></p>
+              </article>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="drag-drop" class="topic" data-title="Drag and Drop" data-keywords="drag and drop dropped items dialog shortcuts external drop">
+        <details open>
+          <summary>Drag and Drop</summary>
+          <div class="topic-body searchable">
+            <p>You can drag files, folders, apps, scripts, HTML pages, and website shortcuts into ToolBar2. External drops open the existing dropped-items workflow so you can decide whether to add the items at the top level or inside a destination menu or submenu.</p>
+            <p>Top-level blank toolbar drops still use the dropped-items dialog. The blank-area <strong>Add Launcher...</strong> command is separate and opens the launcher editor directly.</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="accept-dropped-files" class="topic" data-title="Accept Dropped Files" data-keywords="accept dropped files folder drop action move copy ask each time">
+        <details open>
+          <summary>Accept Dropped Files</summary>
+          <div class="topic-body searchable">
+            <p>Launchers can optionally accept dropped local files. Folder launchers expose the folder-specific drop action choices and can move, copy, or ask each time. Non-folder launchers can still receive dropped files when configured, usually to pass those files to the target program or script.</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="multi-monitor" class="topic" data-title="Multi-Monitor Toolbars" data-keywords="multi monitor monitors selected monitors unique toolbar identify monitors assign imported toolbar">
+        <details open>
+          <summary>Multi-Monitor Toolbars</summary>
+          <div class="topic-body searchable">
+            <p>Use the Behavior tab monitor tools to identify displays, select which monitors participate, and decide whether those monitors share a toolbar or keep unique toolbar profiles.</p>
+            <p><strong>Assign Imported Toolbar...</strong> helps place imported profiles onto known monitors. Unique per-monitor toolbars preserve their own menus, logo settings, and Web Search bar position.</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="import-export" class="topic" data-title="Import and Export Profiles" data-keywords="import export profiles package saved profiles user profiles">
+        <details open>
+          <summary>Import and Export Profiles</summary>
+          <div class="topic-body searchable">
+            <p>ToolBar2 supports importing and exporting toolbar profile packages. This includes toolbar appearance, behavior, logo configuration, menus, launchers, and the saved Web Search bar settings and position.</p>
+            <div class="callout default">
+              <strong>Compatibility</strong>
+              <span>Older configs that still contain customer-search fields load without errors. ToolBar2 migrates them to the current Web Search bar settings and ignores the obsolete path field.</span>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="troubleshooting" class="topic" data-title="Troubleshooting" data-keywords="troubleshooting missing help invalid custom url toolbar too short logo overflow search warning">
+        <details open>
+          <summary>Troubleshooting</summary>
+          <div class="topic-body searchable">
+            <div class="callout warning">
+              <strong>Help will not open</strong>
+              <span>If <code>help/index.html</code> is missing or your browser rejects the local file URL, ToolBar2 shows a warning dialog instead of raising an exception.</span>
+            </div>
+            <div class="callout warning">
+              <strong>Toolbar looks cramped</strong>
+              <span>Reduce <strong>Toolbar height</strong>, <strong>Button height</strong>, or <strong>Top/bottom edge padding</strong> conflicts by lowering the requested values. ToolBar2 already auto-shrinks controls, but extreme combinations still reduce usable space.</span>
+            </div>
+            <div class="callout warning">
+              <strong>Web Search warning</strong>
+              <span>If Custom search does nothing, verify the URL includes <code>{query}</code>.</span>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="keyboard-mouse" class="topic" data-title="Keyboard and Mouse Actions" data-keywords="keyboard mouse actions f2 delete ctrl+d double click right click paste select all">
+        <details open>
+          <summary>Keyboard and Mouse Actions</summary>
+          <div class="topic-body searchable">
+            <div class="settings-grid">
+              <article class="setting-card">
+                <h4>F2</h4>
+                <p>Rename the selected item in the Menus tree when renaming is allowed.</p>
+              </article>
+              <article class="setting-card">
+                <h4>Delete</h4>
+                <p>Delete the selected tree item when deletion is allowed.</p>
+              </article>
+              <article class="setting-card">
+                <h4>Ctrl+D</h4>
+                <p>Duplicate the selected tree item when duplication is allowed.</p>
+              </article>
+              <article class="setting-card">
+                <h4>Double-click</h4>
+                <p>Edits a top-level menu, launcher, top-level launcher, or the special <strong>Web Search Bar</strong> row in the Menus tree.</p>
+              </article>
+              <article class="setting-card">
+                <h4>Right-click the Web Search bar</h4>
+                <p>Opens actions for <strong>Paste</strong>, <strong>Select All</strong>, <strong>Edit Search Bar...</strong>, <strong>Move Left</strong>, <strong>Move Right</strong>, and <strong>Hide Search Bar</strong>.</p>
+              </article>
+            </div>
+          </div>
+        </details>
+      </section>
+
+    <footer class="footer">
+      <p>
+        <i>
+          ToolBar2 is free and open source. If it saves you time or helps keep your
+          desktop organized, consider supporting its continued development.
+        </i>
+      </p>
+
+      <div style="text-align: center;">
+        <a href="https://www.paypal.com/donate/?hosted_button_id=FRRKTE7W8KYWU">
+          <img
+            src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+            alt="Donate with PayPal"
+          >
+        </a>
+
+        <h5 style="margin-top: 8px;">
+          <i>Donations are optional and greatly appreciated.</i>
+        </h5>
+      </div>
+    </footer>
+
+      <div class="pager">
+        <button id="prev-topic" type="button">Previous Topic</button>
+        <button id="next-topic" type="button">Next Topic</button>
+      </div>
+    </main>
+  </div>
+  <script src="help.js"></script>
+</body>
+</html>
