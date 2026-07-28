@@ -282,6 +282,26 @@ The final EXE is created at:
 dist\ToolBar2.exe
 ```
 
+<p>
+        <i>
+          ToolBar2 is free and open source. If it saves you time or helps keep your
+          desktop organized, consider supporting its continued development.
+        </i>
+      </p>
+
+      <div style="text-align: center;">
+        <a href="https://www.paypal.com/donate/?hosted_button_id=FRRKTE7W8KYWU">
+          <img
+            src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+            alt="Donate with PayPal"
+          >
+        </a>
+
+        <h5 style="margin-top: 8px;">
+          <i>Donations are optional and greatly appreciated.</i>
+        </h5>
+      </div>
+
 The build script removes only `build` and `dist`. It does not delete `toolbar_config.json`, `toolbar_config.backup.json`, or `user_profiles`.
 
 ## Tests
