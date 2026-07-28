@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://github.com/Synth6/ToolBar2">
+    <img src="img/ToolBar2.png" alt="ToolBar2" width="700">
+  </a>
+</p>
+
 # ToolBar2
 
 ToolBar2 is a Windows desktop toolbar built with Python and PyQt6. It provides configurable top-edge toolbars, saved user profiles, menu and launcher editing, profile import/export, and shared or per-monitor toolbar layouts.
