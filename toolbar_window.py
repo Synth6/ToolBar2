@@ -3011,7 +3011,11 @@ class ToolbarWindow(QtWidgets.QFrame):
                 and bool(launcher.get("accept_dropped_files", False))
                 and self.is_drop_run_launcher(launcher)
             ):
-                launch_item_with_args(launcher, paths, self)
+                launch_arguments = [
+                    os.path.normpath(path)
+                    for path in (local_paths or paths)
+                ]
+                launch_item_with_args(launcher, launch_arguments, self)
                 return True
             return self.show_dropped_items_dialog(paths, None)
         preselected = button.property("menu_path")
@@ -3067,7 +3071,11 @@ class ToolbarWindow(QtWidgets.QFrame):
             and bool(launcher.get("accept_dropped_files", False))
             and self.is_drop_run_launcher(launcher)
         ):
-            launch_item_with_args(launcher, paths, self)
+            launch_arguments = [
+                os.path.normpath(path)
+                for path in (local_paths or paths)
+            ]
+            launch_item_with_args(launcher, launch_arguments, self)
             self.close_active_toolbar_menu()
             return
         if self.action_represents_launcher(action):
