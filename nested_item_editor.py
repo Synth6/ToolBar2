@@ -410,19 +410,51 @@ class NestedItemEditorWidget(QtWidgets.QWidget):
                 return False
         return True
 
-    def destination_paths(self) -> list[tuple[str, list[int]]]:
-        destinations = [("Logo Menu", [])]
+    def destination_paths(self) -> list[dict]:
+        destinations = [
+            {
+                "label": "Logo Menu",
+                "path": [],
+                "id": "logo_menu",
+            }
+        ]
+
         for index in range(self.tree.topLevelItemCount()):
-            self.collect_destinations(self.tree.topLevelItem(index), [index], destinations)
+            self.collect_destinations(
+                self.tree.topLevelItem(index),
+                [index],
+                destinations,
+            )
+
         return destinations
 
-    def collect_destinations(self, item: QtWidgets.QTreeWidgetItem, path: list[int], destinations: list[tuple[str, list[int]]]) -> None:
+    def collect_destinations(
+        self,
+        item: QtWidgets.QTreeWidgetItem,
+        path: list[int],
+        destinations: list[dict],
+    ) -> None:
         data = self.item_data(item)
-        if data.get("type") == "submenu":
-            label = " > ".join(self.names_for_path(path))
-            destinations.append((label, path.copy()))
-            for index in range(item.childCount()):
-                self.collect_destinations(item.child(index), [*path, index], destinations)
+
+        if data.get("type") != "submenu":
+            return
+
+        label = "Logo Menu > " + " > ".join(self.names_for_path(path))
+
+        destinations.append(
+            {
+                "label": label,
+                "path": path.copy(),
+                "id": str(data.get("id") or ""),
+            }
+        )
+
+        for index in range(item.childCount()):
+            self.collect_destinations(
+                item.child(index),
+                [*path, index],
+                destinations,
+            )
 
     def names_for_path(self, path: list[int]) -> list[str]:
         names = []
@@ -448,21 +480,63 @@ class NestedItemEditorWidget(QtWidgets.QWidget):
         if not targets:
             event.ignore()
             return
+
         item = self.tree.itemAt(event.position().toPoint())
         destination_path: list[int] | None = None
+
         if item is not None:
-            destination = item if self.item_data(item).get("type") == "submenu" else item.parent()
-            destination_path = self.config_path_for_item(destination) if destination is not None else []
-        dialog = DroppedItemsDialog(targets, self.destination_paths(), destination_path, self)
+            destination = (
+                item
+                if self.item_data(item).get("type") == "submenu"
+                else item.parent()
+            )
+            destination_path = (
+                self.config_path_for_item(destination)
+                if destination is not None
+                else []
+            )
+
+        dialog = DroppedItemsDialog(
+            targets,
+            self.destination_paths(),
+            destination_path,
+            self,
+        )
+
         if dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             event.ignore()
             return
-        path, items = dialog.result_items()
-        for dropped in items:
-            self.insert_item_at_path(path, validate_item(dropped))
+
+        results = dialog.result_items()
+        last_destination_path: list[int] = []
+
+        for result in results:
+            dropped_item = result.get("item")
+            if not isinstance(dropped_item, dict):
+                continue
+
+            item_destination = result.get("destination_path")
+            if not isinstance(item_destination, list):
+                item_destination = []
+
+            # Logo Menu items must always be nested launchers,
+            # never toolbar top-level launchers.
+            if dropped_item.get("type") == "top_launcher":
+                dropped_item["type"] = "launcher"
+                dropped_item.pop("icon_path", None)
+                dropped_item.pop("icon_only", None)
+                dropped_item.setdefault("icon", "")
+
+            self.insert_item_at_path(
+                item_destination,
+                validate_item(dropped_item),
+            )
+            last_destination_path = item_destination
+
         self.populate_tree()
-        self.select_last_inserted_item(path)
+        self.select_last_inserted_item(last_destination_path)
         self.notify_changed()
+
         event.setDropAction(QtCore.Qt.DropAction.CopyAction)
         event.accept()
 
